@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <functional>
+#include <random>
 
 namespace neural
 {
@@ -11,8 +12,18 @@ namespace neural
     public:
         // Initialize the perceptron with a given size and a given sigma function
         // and all synaptic weights in zero
-        Perceptron(uint tSize, std::function<T(T)> tSigma) 
-            : mSize(tSize), mSigma(tSigma), mWeights(mSize) {}
+        Perceptron(uint tSize, std::function<T(T)> tSigma, T tEtha) 
+            : mSize(tSize), mSigma(tSigma), mWeights(mSize), mEtha(tEtha) {}
+
+        // Initialize perceptron with random weights given by a randFunction
+        Perceptron(uint tSize, std::function<T(T)> tSigma, T tEtha, std::function<T()> randFunction)
+            : mSize(tSize), mSigma(tSigma), mWeights(mSize), mEtha(tEtha) 
+        {
+            for(uint i = 0; i < mSize; i++)
+            {
+                mWeights[i] = randFunction();
+            }
+        }            
 
         // Get value of feeding input vector X to this perceptron
         T evaluate(const std::vector<T>& X);
@@ -44,4 +55,6 @@ namespace neural
     {
         return x > static_cast<T>(0) ? static_cast<T>(1) : static_cast<T>(0);
     }
+
+    double getRandomInit();
 };

@@ -53,4 +53,14 @@ namespace neural
             if(!trainEpoch(input)) break;
         }
     }
+
+    double getRandomInit(){
+        static std::random_device rd;
+        static std::mt19937 e2(rd());
+        static std::uniform_real_distribution<double> dist(-0.05, 0.05);
+
+        return dist(e2);
+    }
+
+    template class Perceptron<double>;
 }
